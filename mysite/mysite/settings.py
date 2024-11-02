@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 # TIME_ZONE = 'UTC'
 # USE_TZ = True
 USE_I18N = True

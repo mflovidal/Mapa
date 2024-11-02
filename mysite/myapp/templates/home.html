@@ -14,7 +14,16 @@
     <p>LANGUAGE_CODE: {{ LANGUAGE_CODE }}</p>
 
     {% load i18n %}
-    <h1>{% trans "Hello, world!" %}</h1>
+    <h1>{% trans "Sugerencias" %}<h1>  
+    <p>
+        {% trans "Cuenta con la más completa colección nacional de revistas. Fue creada en el año 1974 con motivo del aniversario 161 de la Biblioteca Nacional. El Director de esos años, Roque Esteban Scarpa, decide concentrar este tipo de publicaciones en una sección especial." %}<br>
+        {% trans "Alberga, en sus depósitos, revistas chilenas y extranjeras, almanaques y publicaciones oficiales chilenas, entre otros. La mayoría del acervo actual de la sección es lo que se recibe por concepto de depósito legal." %}<br>
+        {% trans "Dentro de su colección podemos encontrar dos de las revistas más antiguas impresas en Chile, la Revista Católica y los Anales de la Universidad de Chile, ambas de 1843. Las temáticas que cubren son diversas, como también los editores." %}<br>
+        {% trans "En cuanto a revistas extranjeras, la más antigua data de 1665, “Journal des sçavans”. La gran mayoría de revistas extranjeras han llegado por concepto de canje y/o  donación, principalmente abarcan las temáticas de las ciencias sociales, artes, religión, filosofía,  literatura e historia. Actualmente, llegan por donación y en su mayoría son en español." %}<br>
+        {% trans "Se cuenta también con publicaciones oficiales chilenas de organismos estatales como por ejemplo el Instituto Nacional de Estadísticas, junto con publicaciones oficiales de organismos privados como las Naciones Unidas o Universidades." %}<br>
+        {% trans "De igual modo, se cuenta con publicaciones generadas en el exilio por chilenos, como por ejemplo “Nueva Historia” y “Araucaria de Chile”." %}
+    </p> 
+    
     <form action="{% url 'change_language' %}" method="get">
         <select name="lang" onchange="this.form.submit()">
             <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
