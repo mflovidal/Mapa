@@ -1,10 +1,31 @@
 var map = L.map('map', {
-    crs: L.CRS.Simple
+    crs: L.CRS.Simple,
+    minZoom: -1,
+    maxZoom: 2,
 });
 var bounds = [[0,0], [1000,1000]];
-var image = L.imageOverlay('static/imagenes del mapa/Piso uno.png', bounds)
-image.addTo(map)
+var basemap = L.imageOverlay('static/imagenes del mapa/Piso uno.png', bounds);
+var secondLayer = L.imageOverlay('static/imagenes del mapa/Piso dos.png', bounds);
+var thirdLayer = L.imageOverlay('static/imagenes del mapa/Piso menos uno.png', bounds);
+
+basemap.addTo(map);
 map.fitBounds(bounds);
+
+var imageLayers = {
+    "Piso Uno": basemap,
+    "Piso Dos": secondLayer,
+    "Piso Menos Uno": thirdLayer,
+};
+
+L.control.layers(imageLayers).addTo(map);
+
+document.addEventListener("DOMContentLoaded", function() {
+    const closeButton = document.getElementById("close-info-panel");
+    const infoPanel = document.getElementById("info-panel");
+    closeButton.addEventListener("click", function() {
+        infoPanel.style.display = "none";
+    });
+});
 
 const areas = [
     {coords: [[50,250], [150,350]], key: 'Hemeroteca'},
