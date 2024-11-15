@@ -1,0 +1,8 @@
+#map {
+    position: relative;
+    height: 500px;
+    background-image: url('/static/FPW.jpg'); 
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+}

@@ -126,3 +126,4 @@ LANGUAGE_COOKIE_NAME = 'django_language'
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'calendario'
+STATIC_URL = '/static/'
