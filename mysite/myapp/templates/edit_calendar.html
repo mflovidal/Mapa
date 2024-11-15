@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Calendario</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.print.css" rel="stylesheet" media="print" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
+
+    {% csrf_token %}
+</head>
+<body>
+    <h1>Editor de Calendario</h1>
+    <div id="calendar"></div>
+    <div id="eventModal" style="display:none;">
+        <h3 id="modalTitle">Agregar Evento</h3>
+        <form id="eventForm" method="POST">
+            {% csrf_token %}
+            <label for="eventTitle">Título del Evento</label>
+            <input type="text" id="eventTitle" name="title" required><br>
+            <label for="eventStart">Fecha y Hora de Inicio</label>
+            <input type="datetime-local" id="eventStart" name="start_time" required><br>
+            <label for="eventEnd">Fecha y Hora de Fin</label>
+            <input type="datetime-local" id="eventEnd" name="end_time" required><br>
+            <input type="hidden" id="eventId" name="event_id">
+            <button type="submit">Guardar Evento</button>
+        </form>
+        <button id="deleteEventButton" style="display:none;">Eliminar Evento</button>
+        <button id="closeModalButton">Cerrar</button>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            var currentEvent = null;
+            $('#calendar').fullCalendar({
+                events: {{ events|safe }},
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                eventClick: function(event, jsEvent, view) {
+                    currentEvent = event;
+                    $('#modalTitle').text('Editar Evento');
+                    $('#eventTitle').val(event.title);
+                    $('#eventStart').val(moment(event.start).format('YYYY-MM-DDTHH:mm'));
+                    $('#eventEnd').val(moment(event.end).format('YYYY-MM-DDTHH:mm'));
+                    $('#eventId').val(event.id);
+                    $('#eventModal').show();
+                    $('#deleteEventButton').show();
+                },
+                dayClick: function(date, jsEvent, view) {
+                    currentEvent = null;
+                    $('#modalTitle').text('Agregar Evento');
+                    $('#eventForm')[0].reset();
+                    $('#eventStart').val(date.format());
+                    $('#eventEnd').val(date.add(1, 'hours').format()); 
+                    $('#eventModal').show();
+                    $('#deleteEventButton').hide();
+                }
+            });
+            $('#eventForm').on('submit', function(event) {
+                event.preventDefault();
+
+                var title = $('#eventTitle').val();
+                var start = $('#eventStart').val();
+                var end = $('#eventEnd').val();
+                var eventId = $('#eventId').val();
+                if (currentEvent) {
+                    $.ajax({
+                        url: '{% url "update_event" %}', 
+                        method: 'POST',
+                        data: {
+                            'id': eventId,
+                            'title': title,
+                            'start_time': start,
+                            'end_time': end,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        success: function(response) {
+                            $('#calendar').fullCalendar('removeEvents', currentEvent.id);  
+                            $('#calendar').fullCalendar('renderEvent', response.event);  
+                            $('#eventModal').hide();
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: '{% url "add_event" %}', 
+                        method: 'POST',
+                        data: {
+                            'title': title,
+                            'start_time': start,
+                            'end_time': end,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        success: function(response) {
+                            $('#calendar').fullCalendar('renderEvent', response.event);
+                            $('#eventModal').hide();
+                        }
+                    });
+                }
+            });
+            $('#deleteEventButton').on('click', function() {
+                if (currentEvent) {
+                    $.ajax({
+                        url: '{% url "delete_event" %}',
+                        method: 'POST',
+                        data: {
+                            'id': currentEvent.id,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        success: function(response) {
+                            $('#calendar').fullCalendar('removeEvents', currentEvent.id); 
+                            $('#eventModal').hide();
+                        }
+                    });
+                }
+            });
+            $('#closeModalButton').on('click', function() {
+                $('#eventModal').hide();
+            });
+        });
+    </script>
+</body>
+</html>

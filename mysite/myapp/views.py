@@ -2,11 +2,14 @@ from django.shortcuts import render, redirect
 from django.utils import translation
 from django.conf import settings
 from django.utils.translation import get_language
-from .forms import SugerenciaForm, EventoForm
+from .forms import SugerenciaForm
+from django.contrib.auth import authenticate, login
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from .models import Evento
+from .forms import CustomLoginForm
+from .models import Event
 # Create your views here.
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.template import loader
 
 def myapp(request):
@@ -34,24 +37,117 @@ def change_language(request):
     else:
         return redirect('/')
 
+def index(request):
+    """Vista para la página principal con el calendario."""
+    events = Event.objects.all()
+    events_data = [
+        {
+            'title': event.title,
+            'start': event.start_time.isoformat(),
+            'end': event.end_time.isoformat(),
+            'description': event.description
+        }
+        for event in events
+    ]
+    return render(request, 'home.html', {'events': events_data})
 
-def calendario_view(request):
-    eventos = Evento.objects.all()
-    return render(request, 'mysite/calendario.html', {'eventos': eventos})
+def view_calendar(request):
+    """Vista para mostrar el calendario sin permitir la edición."""
+    events = Event.objects.all()
+    events_data = [
+        {
+            'id': event.id,
+            'title': event.title,
+            'start': event.start_time.isoformat(),
+            'end': event.end_time.isoformat(),
+            'description': event.description
+        }
+        for event in events
+    ]
+    return render(request, 'view_calendar.html', {'events': events_data})
 
-@login_required
-def editar_evento(request, evento_id=None):
-    if evento_id:
-        evento = Evento.objects.get(id=evento_id)
-    else:
-        evento = None
+#@login_required
+def edit_calendar(request):
+    events = Event.objects.all()
+    events_data = [
+        {
+            'id': event.id,
+            'title': event.title,
+            'start': event.start_time.isoformat(),
+            'end': event.end_time.isoformat(),
+            'description': event.description
+        }
+        for event in events
+    ]
+    return render(request, 'edit_calendar.html', {'events': events_data})
+
+@csrf_exempt
+def add_event(request):
+    if request.method == "POST":
+        title = request.POST.get('title')
+        start_time = request.POST.get('start_time')
+        end_time = request.POST.get('end_time')
+        
+        event = Event.objects.create(
+            title=title,
+            start_time=start_time,
+            end_time=end_time
+        )
+        return JsonResponse({
+            'event': {
+                'id': event.id,
+                'title': event.title,
+                'start': event.start_time.isoformat(),
+                'end': event.end_time.isoformat(),
+                'description': event.description
+            }
+        })
+
+@csrf_exempt
+def update_event(request):
+    if request.method == "POST":
+        event_id = request.POST.get('id')
+        title = request.POST.get('title')
+        start_time = request.POST.get('start_time')
+        end_time = request.POST.get('end_time')
+        
+        event = Event.objects.get(id=event_id)
+        event.title = title
+        event.start_time = start_time
+        event.end_time = end_time
+        event.save()
+
+        return JsonResponse({
+            'event': {
+                'id': event.id,
+                'title': event.title,
+                'start': event.start_time.isoformat(),
+                'end': event.end_time.isoformat(),
+                'description': event.description
+            }
+        })
+
+@csrf_exempt
+def delete_event(request):
+    if request.method == "POST":
+        event_id = request.POST.get('id')
+        event = Event.objects.get(id=event_id)
+        event.delete()
+
+        return JsonResponse({'status': 'success'})
     
-    if request.method == 'POST':
-        form = EventoForm(request.POST, instance=evento)
+#def login_view(request):  (para despues)
+    if request.method == "POST":
+        form = CustomLoginForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('calendario')
+            username = request.POST['yo']
+            password = request.POST['8']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('edit_calendar')
+            else:
+                return render(request, 'login.html', {'error': 'Invalid credentials'})
     else:
-        form = EventoForm(instance=evento)
-    
-    return render(request, 'mysite/editar_evento.html', {'form': form})
+        form = CustomLoginForm()
+    return render(request, 'login.html')

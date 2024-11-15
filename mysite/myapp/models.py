@@ -14,12 +14,11 @@ class Sugerencias(models.Model):
     class Meta:
         verbose_name_plural = "Sugerencias"
 
-class Evento(models.Model):
-    titulo = models.CharField(max_length=200)
-    descripcion = models.TextField()
-    fecha_inicio = models.DateTimeField()
-    fecha_fin = models.DateTimeField()
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    
+class Event(models.Model):
+    title = models.CharField(max_length=100)
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    description = models.TextField()
+
     def __str__(self):
-        return self.titulo
+        return self.title

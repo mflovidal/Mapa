@@ -5,6 +5,10 @@
 <head>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
     <style>
         #info-panel{
             position: absolute;
@@ -137,6 +141,22 @@
                 info: "{% trans 'El Depósito Legal es la normativa que establece la obligatoriedad, para todas las imprentas, productoras de cine y video, sellos musicales, publicaciones electrónicas y canales de televisión, de enviar a la Biblioteca Nacional un determinado número de ejemplares al momento de su publicación.' %} {% trans 'En el caso de los impresos deben enviarse 5 ejemplares; en cuanto a las grabaciones sonoras, producciones audiovisuales o electrónicas, 2 ejemplares de cada una. En el caso de las publicaciones periódicas pueden suscribirse convenios para establecer modalidades de depósito legal mixto, sustituyendo algunos ejemplares por microfilmes y/o soportes electrónicos. De los impresos en regiones, 3 ejemplares deben enviarse a la Biblioteca Nacional y 2 ejemplares se depositan en la Biblioteca Regional de la respectiva región. En caso de no existir, deberán enviarse los 5 ejemplares a la Biblioteca Nacional.' %} {% trans 'La Ley de Depósito Legal fue dictada en octubre de 1925 y, actualmente, esta normativa se enmarca dentro de la Ley 19.733 sobre libertades de opinión e información y ejercicio del periodismo, publicada en el Diario Oficial con fecha 6 de junio del año 2001. Inciso modificado Ley 20.709 Art. Único N°1 i D.O. 23/12/2013, Artículo 14 (inciso final).' %} {% trans '“Los organismos del Estado no podrán adquirir obras impresas, grabaciones sonoras o producciones electrónicas o audiovisuales, fílmicas o cinematográficas, de los editores, productores o realizadores que no den cumplimiento a la obligación establecida en este artículo (Depósito Legal), ni otorgar financiamiento a éstos a través de fondos o subvenciones. Para estos efectos, la Biblioteca Nacional deberá certificar que no ha efectuado denuncias relativas a esta infracción.”' %}"
             }
         };
+    </script>
+    <h1>Mi Calendario</h1>
+
+    <div id="calendar"></div>
+    <button onclick="window.location.href='{% url 'view_calendar' %}'">Ver Calendario</button>
+    <script>
+        $(document).ready(function() {
+            $('#calendar').fullCalendar({
+                events: {{ events|safe }},
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                }
+            });
+        });
     </script>
 </body>
 </html>

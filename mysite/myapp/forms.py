@@ -12,11 +12,6 @@ class SugerenciaForm(forms.ModelForm):
         }
         labels = {'sugerencia': '',
                   }
-
-from django import forms
-from .models import Evento
-
-class EventoForm(forms.ModelForm):
-    class Meta:
-        model = Evento
-        fields = ['titulo', 'descripcion', 'fecha_inicio', 'fecha_fin']
+class CustomLoginForm(forms.Form):
+    nombre_de_usuario = forms.CharField(max_length=100)
+    clave_secreta = forms.CharField(widget=forms.PasswordInput)
