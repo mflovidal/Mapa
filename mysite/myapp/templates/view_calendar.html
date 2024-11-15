@@ -10,7 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
 </head>
 <body>
-    <h1>Calendario de Eventos</h1>
+    {% load i18n %}
+    <h1>{% trans 'Calendario de Eventos' %}</h1>
     <div id="calendar"></div>
     <button onclick="window.location.href='{% url 'edit_calendar' %}'">Editar Calendario</button>
 

@@ -142,10 +142,10 @@
             }
         };
     </script>
-    <h1>Mi Calendario</h1>
+    <h1>{% trans 'Eventos' %}</h1>
 
     <div id="calendar"></div>
-    <button onclick="window.location.href='{% url 'view_calendar' %}'">Ver Calendario</button>
+    <button onclick="window.location.href='{% url 'view_calendar' %}'">{% trans 'Ver Eventos' %}</button>
     <script>
         $(document).ready(function() {
             $('#calendar').fullCalendar({
