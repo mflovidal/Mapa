@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEXTO DE PRUEBA</title>
+</head>
+<body>
+    <h1>Listado de Sugerencias</h1>
+    <form method="GET" action="{% url 'ver_sugerencias' %}">
+        <input type="text" name="q" placeholder="Buscar sugerencias..." value="{{ buscar }}">
+        <button type="submit">Buscar</button>
+    </form>
+    {% if sugerencias %}
+        <ul>
+            {% for sugerencia in sugerencias %}
+                <li>
+                    <strong>Sugerencia:</strong> {{ sugerencia.sugerencia }}<br>
+                    <strong>Fecha de Creacion:</strong> {{ sugerencia.fecha_creacion }}<br>
+                    <strong>Estado:</strong> {{ sugerencia.estado }}<br>
+                    <form method="POST" action="{% url 'ver_sugerencias' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="sugerencia_id" value="{{ sugerencia.id }}">
+                        <select name="estado">
+                            <option value="Pendiente" {% if sugerencia.estado == 'Pendiente' %} selected{% endif %}>Pendiente</option>
+                            <option value="Revisada" {% if sugerencia.estado == 'Revisada' %} selected{% endif %}>Revisada</option>
+                            <option value="Implementada" {% if sugerencia.estado == 'Implementada' %} selected{% endif %}>Implementada</option>
+                        </select>
+                        <button type="submit">Actualizar Estado</button>
+                    </form>                   
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No se encontraron sugerencias para "{{ buscar }}".</p>
+    {% endif %}
+    <a href="/">Volver al inicio</a>
+</body>
+</html>

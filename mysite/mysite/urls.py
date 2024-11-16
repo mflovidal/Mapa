@@ -22,4 +22,7 @@ urlpatterns=[
     path('', include('myapp.urls')),
     path('admin/', admin.site.urls),
     path('change_language/', views.change_language, name='change_language'),
+    path('sugerencias/', views.ver_sugerencias, name='ver_sugerencias'),
+    path('signin/', views.signin, name='signin'),
+    path('signout/', views.signout, name='signout'),
 ]

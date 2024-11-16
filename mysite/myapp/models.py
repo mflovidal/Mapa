@@ -6,9 +6,14 @@ class Myapp(models.Model):
     field2 = models.CharField(max_length=255)
 
 class Sugerencias(models.Model):
+    ESTADOS = [
+        ('Pendiente', 'Pendiente'),
+        ('Revisada', 'Revisada'),
+        ('Implementada', 'Implementada'),
+    ]
     sugerencia = models.TextField()
     fecha_creacion = models.DateTimeField(auto_now_add=True)
-
+    estado= models.CharField(max_length=20, choices=ESTADOS, default='Pendiente')
     def __str__(self):
         return self.sugerencia
     class Meta:

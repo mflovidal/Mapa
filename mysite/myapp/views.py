@@ -3,11 +3,12 @@ from django.utils import translation
 from django.conf import settings
 from django.utils.translation import get_language
 from .forms import SugerenciaForm
-from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import login_required
-from .forms import CustomLoginForm
-from .models import Event
+from django.contrib.auth.decorators import permission_required
+from .forms import CustomLoginForm, SugerenciaForm
+from .models import Event, Sugerencias
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.forms import AuthenticationForm
 # Create your views here.
 from django.http import JsonResponse
 from django.template import loader
@@ -136,18 +137,43 @@ def delete_event(request):
 
         return JsonResponse({'status': 'success'})
     
-#def login_view(request):  (para despues)
-    if request.method == "POST":
-        form = CustomLoginForm(request.POST)
+@permission_required('myapp.view_sugerencias', raise_exception=True)
+@permission_required('myapp.change_sugerencias', raise_exception=True)
+def ver_sugerencias(request):
+    buscar = request.GET.get('q', '')
+    if buscar:
+        sugerencias = Sugerencias.objects.filter(sugerencia__icontains=buscar)
+    else:
+        sugerencias = Sugerencias.objects.all()
+    if request.method == 'POST' and 'estado' in request.POST:
+        sugerencia_id = request.POST.get('sugerencia_id')
+        estado = request.POST.get('estado')
+        try:
+            sugerencia = Sugerencias.objects.get(id=sugerencia_id)
+            sugerencia.estado = estado
+            sugerencia.save()
+            return redirect('ver_sugerencias')
+        except Sugerencias.DoesNotExist:
+            pass
+    return render(request, 'ver_sugerencias.html', {
+        'sugerencias': sugerencias,
+        'buscar': buscar,
+    })
+def signin(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            username = request.POST['yo']
-            password = request.POST['8']
-            user = authenticate(request, username=username, password=password)
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('edit_calendar')
+                return redirect('ver_sugerencias')
             else:
-                return render(request, 'login.html', {'error': 'Invalid credentials'})
+                form.add_error(None, 'Usuario o contraseña incorrectos')
     else:
-        form = CustomLoginForm()
-    return render(request, 'login.html')
+        form = AuthenticationForm()
+    return render(request, 'signin.html', {'form': form})
+def signout(request):
+    logout(request)
+    return redirect('/')

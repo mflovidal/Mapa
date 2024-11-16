@@ -124,6 +124,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LANGUAGE_COOKIE_NAME = 'django_language'
 
-LOGIN_URL = 'login'
+LOGIN_URL = 'signin'
 LOGIN_REDIRECT_URL = 'calendario'
 STATIC_URL = '/static/'

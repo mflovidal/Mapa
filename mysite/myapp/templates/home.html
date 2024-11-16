@@ -165,5 +165,13 @@
             });
         });
     </script>
+    {% if user.is_authenticated %}
+        <p>Hola, {{ user.username }} <a href="{% url 'signout' %}">Cerrar sesion</a></p>
+         <a href="{% url 'ver_sugerencias' %}">
+            <button type="button">Ver Sugerencias</button>
+        </a>
+    {% else %}
+        <p><a href="{% url 'signin' %}">Iniciar sesion</a></p>
+    {% endif %}
 </body>
 </html>
