@@ -1,8 +1,24 @@
 #map {
     position: relative;
     height: 500px;
-    background-image: url('/static/FPW.jpg'); 
+    background-image: url('/static/FBN.jpg'); 
     background-size: cover; 
     background-position: center;
     background-repeat: no-repeat;
+}
+.leaflet-control-zoom {
+    top: 50px;
+
+}
+#event-button {
+    position: absolute;
+    top: 525px;          
+    left: 50%;    
+    width: 300px;
+    transform: translateX(-50%);
+    z-index: 10;      
+    padding: 10px 10px;
+    background-color: rgb(255, 255, 255); 
+    color: black;       
+    border-radius: 5px; 
 }
