@@ -1,14 +1,57 @@
 #map {
     position: relative;
-    height: 500px;
+    height: 810px;
     background-image: url('/static/FBN.jpg'); 
     background-size: cover; 
     background-position: center;
     background-repeat: no-repeat;
+    top: -20px;
 }
 .leaflet-control-zoom {
-    top: 50px;
+    top: 120px;
 
+}
+
+.leaflet-control-layers {
+    background-color: rgba(0, 0, 0, 0.568);  /* Fondo semi-transparente */
+    backdrop-filter: blur(10px);  /* Aplica el desenfoque en el fondo */
+    border: 2px solid #ffcc00;  /* Borde amarillo */
+    border-radius: 5px;  /* Bordes redondeados */
+    padding: 10px;  /* Espaciado dentro del control */
+    top: 67px;
+}
+
+
+.leaflet-control-layers-list {
+    color: #fff;  
+    font-size: 14px;
+}
+.leaflet-control-layers-selector {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+    border-radius: 5px;
+}
+.leaflet-control-layers-toggle {
+    background-color: #000000a2;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+
+
+
+#button_evento {
+    padding: 10px 10px;
+    background-color: rgb(255, 255, 255); 
+    color: black;       
+    border-radius: 5px; 
+    cursor: pointer;
+    text-align: center;
+    align-items: center;
 }
 #event-button {
     position: absolute;

@@ -8,13 +8,36 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
+    <style>
+        .buttones{
+            background-color: #F0F0F0;
+            color: #333; 
+            border: 1px solid #ccc; 
+            padding: 10px 10px; 
+            text-decoration: none;
+            border-radius: 5px; 
+            display: inline-block;
+            font-size: 15.5px; 
+            cursor: pointer; 
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .buttones:hover{
+            background-color: #e0e0e0;
+            border-color: #bbb;
+        }
+        .buttones:active {
+    background-color: #d1d1d1; 
+}
+    </style>
 </head>
 <body>
     {% load i18n %}
     <h1>{% trans 'Calendario de Eventos' %}</h1>
-    <div id="calendar"></div>
-    <button onclick="window.location.href='{% url 'edit_calendar' %}'">Editar Calendario</button>
-
+    <a href="/" class="buttones">Volver al inicio</a><br><br>
+    <div id="calendar"></div><br>
+    {% if user.is_authenticated %}
+        <button class="buttones" onclick="window.location.href='{% url 'edit_calendar' %}'">Editar Calendario</button>
+    {% endif %}
     <script>
         $(document).ready(function() {
             $('#calendar').fullCalendar({
@@ -33,5 +56,6 @@
             });
         });
     </script>
+    
 </body>
 </html>

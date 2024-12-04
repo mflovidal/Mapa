@@ -68,6 +68,8 @@ def view_calendar(request):
     return render(request, 'view_calendar.html', {'events': events_data})
 
 #@login_required
+@permission_required('myapp.view_sugerencias', raise_exception=True)
+@permission_required('myapp.change_sugerencias', raise_exception=True)
 def edit_calendar(request):
     events = Event.objects.all()
     events_data = [
@@ -82,6 +84,8 @@ def edit_calendar(request):
     ]
     return render(request, 'edit_calendar.html', {'events': events_data})
 
+@permission_required('myapp.view_sugerencias', raise_exception=True)
+@permission_required('myapp.change_sugerencias', raise_exception=True)
 @csrf_exempt
 def add_event(request):
     if request.method == "POST":
@@ -104,6 +108,8 @@ def add_event(request):
             }
         })
 
+@permission_required('myapp.view_sugerencias', raise_exception=True)
+@permission_required('myapp.change_sugerencias', raise_exception=True)
 @csrf_exempt
 def update_event(request):
     if request.method == "POST":
@@ -127,7 +133,8 @@ def update_event(request):
                 'description': event.description
             }
         })
-
+@permission_required('myapp.view_sugerencias', raise_exception=True)
+@permission_required('myapp.change_sugerencias', raise_exception=True)
 @csrf_exempt
 def delete_event(request):
     if request.method == "POST":
@@ -141,10 +148,16 @@ def delete_event(request):
 @permission_required('myapp.change_sugerencias', raise_exception=True)
 def ver_sugerencias(request):
     buscar = request.GET.get('q', '')
-    if buscar:
-        sugerencias = Sugerencias.objects.filter(sugerencia__icontains=buscar)
+    estado = request.GET.get('estado', '')
+    if buscar and estado:
+        sugerencias = Sugerencias.objects.filter(sugerencia__icontains=buscar, estado=estado).order_by('-fecha_creacion')
+    elif buscar:
+        sugerencias = Sugerencias.objects.filter(sugerencia__icontains=buscar).order_by('-fecha_creacion')
+    elif estado:
+        sugerencias = Sugerencias.objects.filter(estado=estado).order_by('-fecha_creacion')
     else:
-        sugerencias = Sugerencias.objects.all()
+        sugerencias = Sugerencias.objects.all().order_by('-fecha_creacion')
+
     if request.method == 'POST' and 'estado' in request.POST:
         sugerencia_id = request.POST.get('sugerencia_id')
         estado = request.POST.get('estado')
@@ -158,6 +171,7 @@ def ver_sugerencias(request):
     return render(request, 'ver_sugerencias.html', {
         'sugerencias': sugerencias,
         'buscar': buscar,
+        'estado': estado,
     })
 def signin(request):
     if request.method == 'POST':

@@ -3,14 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEXTO DE PRUEBA</title>
+    <title>Sugerencias</title>
+    <style>
+        .buttones{
+            background-color: #F0F0F0;
+            color: #333; 
+            border: 1px solid #ccc; 
+            padding: 10px 10px; 
+            text-decoration: none;
+            border-radius: 5px; 
+            display: inline-block;
+            font-size: 14px; 
+            cursor: pointer; 
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .buttones:hover{
+            background-color: #e0e0e0;
+            border-color: #bbb;
+        }
+        .buttones:active {
+         background-color: #d1d1d1; 
+}
+    </style>
 </head>
 <body>
-    <h1>Listado de Sugerencias</h1>
+    <h1>Sugerencias</h1>
     <form method="GET" action="{% url 'ver_sugerencias' %}">
         <input type="text" name="q" placeholder="Buscar sugerencias..." value="{{ buscar }}">
-        <button type="submit">Buscar</button>
+        
+        <select name="estado">
+            <option value="">Seleccione un estado</option>
+            <option value="Pendiente" {% if estado == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+            <option value="Revisada" {% if estado == 'Revisada' %}selected{% endif %}>Revisada</option>
+            <option value="Implementada" {% if estado == 'Implementada' %}selected{% endif %}>Implementada</option>
+        </select>
+        
+        <button type="submit" class="buttones">Buscar</button>
+        <a href="{% url 'ver_sugerencias' %}" class="buttones">Borrar Filtros</a>
     </form>
+
     {% if sugerencias %}
         <ul>
             {% for sugerencia in sugerencias %}
@@ -32,8 +63,8 @@
             {% endfor %}
         </ul>
     {% else %}
-        <p>No se encontraron sugerencias para "{{ buscar }}".</p>
+        <p>No se encontraron sugerencias para "{{ buscar }}" con estado "{{ estado }}".</p>
     {% endif %}
-    <a href="/">Volver al inicio</a>
+    <a href="/" class="buttones">Volver al inicio</a>
 </body>
 </html>

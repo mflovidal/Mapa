@@ -51,8 +51,8 @@ MIDDLEWARE = [
 ]
 
 LANGUAGE_CODE = 'es'
-# TIME_ZONE = 'UTC'
-# USE_TZ = True
+TIME_ZONE = 'America/Santiago'
+USE_TZ = True
 USE_I18N = True
 USE_L10N = True
 

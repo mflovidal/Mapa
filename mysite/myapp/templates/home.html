@@ -45,7 +45,8 @@
             height: 25.5vh;
             background-color: #000000;
             margin-top: -4px;
-
+            text-align: center;
+            align-items: center;
         }
 
         select {
@@ -57,18 +58,14 @@
             z-index: 1000;
             border-radius: 5px; 
         } 
-        #inicio-sesion {
-            position: absolute;
-            top: 615px;
-            right: 9.5%;
-            color: white;
-        }
         #event-button {
            position: absolute;
            top: 20px; 
            right: 100px; 
         }
         #info-panel{
+            justify-items: center;
+            text-align: justify;
             position: absolute;
             right: 5%;
             top: 10px;
@@ -80,8 +77,8 @@
             padding: 10px;
             display: none;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
             overflow: auto;
+            z-index: 1000;
         }
         #close-info-panel {
             position: absolute;
@@ -114,6 +111,53 @@
         border-top: 1px solid #ccc;
         padding-top: 10px;
         }
+        .etiqueta-texto{
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 0; 
+            font-size: 14px;
+            font-weight: bold;
+            color: black;
+            text-align: center;
+            pointer-events: none;
+        }
+        .etiqueta-texto-rotado{
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 0; 
+            font-size: 14.6px;
+            font-weight: bold;
+            color: black;
+            text-align: center;
+            pointer-events: none;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+        }
+        .buttones{
+            background-color: #F0F0F0;
+            color: #333; 
+            border: 1px solid #ccc; 
+            padding: 10px 10px; 
+            text-decoration: none;
+            border-radius: 5px; 
+            display: inline-block;
+            font-size: 14px; 
+            cursor: pointer; 
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .buttones:hover{
+            background-color: #e0e0e0;
+            border-color: #bbb;
+        }
+        .buttones:active {
+           background-color: #d1d1d1;    
+        }
+        .button_idioma {
+          top: 10px;
+          left: 160px;
+        }
     </style>
 </head>
 <body>
@@ -123,7 +167,7 @@
         <div class="map-container" id="map"></div>
         <div class="column"></div>
     </div>
-    <div class="block"><br><br><br><br><br><br><br><br><br><br><br>
+    <div class="block"><br><br><br><br><br><br><br><br><button class="buttones"onclick="window.location.href='{% url 'view_calendar' %}'">{% trans 'Ver Eventos' %}</button><br><br><br><br>
     </div>
 
     <link rel="stylesheet" href="{% static 'styles.css' %}">
@@ -148,7 +192,7 @@
     
     
     <form action="{% url 'change_language' %}" method="get">
-        <select name="lang" onchange="this.form.submit()">
+        <select class="button_idioma" name="lang" onchange="this.form.submit()">
             <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
             <option value="es" {% if LANGUAGE_CODE == 'es' %}selected{% endif %}>Spanish</option>
         </select>
@@ -165,11 +209,11 @@
             },
             " Sala José Toribio Medina":{
                 title: "{% trans ' Sala José Toribio Medina' %}",
-                info: "{% trans 'Pertenece a un conjunto de cuatro salones ubicados en el segundo piso, frontis Alameda. De ellos el más conocido por su acceso al público es la Sala José Toribio Medina. Diseñada por el propio Medina, presenta una estructura de tres pisos de estanterías elaboradas con finas maderas, al igual que el mobiliario. Los objetos fueron donados por Medina igualmente y constituyen una pequeña muestra museográfica de su vida y obra. También pertenecieron a Medina el escritorio, el globo terráqueo y el volante de la guillotina de la “Imprenta Elzeviriana” donde Medina imprimió la mayor parte de sus libros.' %} {% trans 'Además la hizo decorar con una serie de cuadros hechos por su amigo el pintor francés Ernest Courtois de Bonnencontre en donde están pintadas escenas de su vida laboral y de algunos de los lugares de sus indagaciones: Sevilla, Simancas, Lima, entre otros. Al cumplirse el centenario de su nacimiento, Camilo Mori hizo un óleo que está sobre la puerta de acceso a la sala y que constituye una alegoría con diversas escenas de la vida de Medina.' %} {% trans 'La Sala Medina inició atención al público en el año 1930. Con cerca de 40.000 títulos, constituye el fondo bibliográfico más valioso de Chile y uno de los más importantes de América Latina en lo que se refiere a textos coloniales y del siglo XIX de los países de habla hispana. Incluye primeras ediciones de la imprenta americana, destacadas obras sobre el Nuevo Mundo, bibliografía, mapas, estampas y manuscritos. Se estima que alrededor del 60% de todo lo que se imprimió en Hispanoamérica colonial forma parte de esta colección. Cuenta además con innumerables obras impresas en todo el mundo sobre la época colonial. Entre las que destaca la Mística Teológica (1547). También forman parte de esta colección documentos tanto personales como oficiales de Bernardo O´Higgins, José de San Martín, José Miguel Carrera, Thomas Cochrane, Camilo Herníquez y otros personajes de nuestra historia.' %} {% trans 'En lo fundamental, la conformación de esta colección se implementó con dos grandes propósitos: por una parte, recopilar sistemáticamente los primeros impresos americanos y por otra parte, reunir un selecto fondo bibliográfico con las obras más importantes relativas a América editadas a partir del descubrimiento.' %} {% trans 'Sobre su benefactor: José Toribio Medina Zavala nació en Santiago el 21 de octubre  de 1852. Egresó de estudios de derecho en 1872 de la Universidad de Chile con distinciones sobresalientes en Derecho Internacional y en Derecho Canónico. Con 21 años, en 1873, juró en la Corte Suprema de Santiago como abogado. En 1874 fue nombrado Secretario de la Legación Chilena en Lima.  El contacto con el inmenso caudal de archivos coloniales acumulados en la antigua capital del virreinato, despertó en Medina la pasión por indagar y recopilar los impresos antiguos relativos a Chile y a la América hispánica. Fue a este tema a lo que abocaría su vida y lo llevó a realizar viajes por Europa y América. El abogado optó entonces a que el producto de su trabajo bibliográfico y de investigación archivística fuese parte de patrimonio nacional. En el año 1925 se concretó este anhelo, explicitando públicamente en una carta la donación a la Biblioteca Nacional de 22.000 volúmenes y 500 tomos de manuscritos que había reunido hasta entonces. El Director de la Biblioteca de aquel tiempo, el Sr. Silva Cruz, aceptó el ofrecimiento y mediante un decreto se ordenó la apertura de una sala con el nombre de su donante.' %} {% trans 'El acondicionamiento para hacer operativa la sala fue dirigida por el mismo Medina: construcción de los anaqueles en maderas nobles, confección del catálogo elaborado en base a fichas, entre otros.' %} {% trans 'La labor de indagación y recolección bibliográfica que realizó, la complementó con trabajos de investigación que dieron como producto 408 publicaciones entre ellos textos sobre Crítica Literaria, Historia de la Cultura, Etnología, Antropología, Cartografía, Paleografía, Lenguas Aborígenes, entre muchos otros.' %}"
+                info: "{% trans 'La Sala José Toribio Medina forma parte de cuatro salones ubicados en el segundo piso, frente a la Alameda. Diseñada por el propio Medina, cuenta con estanterías de tres niveles y muebles de madera fina, además de objetos donados por él, como su escritorio, un globo terráqueo y la rueda de la imprenta “Elzeviriana,” donde imprimió la mayoría de sus obras. La sala incluye pinturas de Ernest Courtois de Bonnencontre que representan escenas de su trabajo y lugares de investigación, como Sevilla y Lima. Abierta al público en 1930, alberga cerca de 40.000 títulos, incluidas primeras ediciones americanas, textos coloniales y documentos de figuras históricas como Bernardo O’Higgins y José de San Martín.' %}\n{% trans 'José Toribio Medina (1852–1930), abogado y bibliógrafo, dedicó su vida a recopilar impresos coloniales de América. En 1925, donó 22.000 volúmenes y 500 manuscritos a la Biblioteca Nacional de Chile, lo que permitió la creación de la Sala Medina. Su legado incluye 408 publicaciones sobre crítica literaria, antropología, cartografía y lenguas indígenas, consolidándolo como una figura clave en la investigación histórica de América Latina.' %}"
             },
             "Archivo de Música":{
                 title: "{% trans 'Archivo de Música' %}",
-                info: "{% trans 'El Archivo de Música es un archivo musical histórico que recibe, custodia, conserva y difunde  Colecciones y Fondos Documentales históricos, de músicos, músicas e instituciones  que reflejan la actividad musical en Chile a lo largo de su historia. Su misión es preservar, Investigar, difundir e incrementar las colecciones —en diversos formatos— relacionados con el patrimonio musical chileno y los fondos documentales que reflejan la creación de los compositores chilenos de música docta, de raíz folklórica y popular.' %}\n\n{% trans 'LA CONFORMACIÓN DE SU ACERVO: FONDOS Y COLECCIONES' %}\n\n{% trans 'Sus fondos documentales son muy variados, y cada uno se compone de documentos musicales más documentos administrativos relacionados con música, como manuscritos de partituras, registros sonoros y audiovisuales, fotografías, afiches, entradas, diplomas, recortes de prensa, correspondencia, cuadernos de campo, documentos de docencia, y también documentos administrativos de carácter histórico, como certificados, cuadernos de actas, contratos a músicos, finiquitos, facturas, recibos de pagos, compras, ventas, impuestos, entre otros.' %}\n\n{% trans 'FONDOS DOCUMENTALES DE MÚSICOS CHILENOS' %}\n\n{% trans 'Algunos de estos fondos corresponden a archivos musicales personales de músicos chilenos —indistintamente del tipo de música, género y actividad musical—, incluyen a compositores que han recibido el Premio Nacional de Arte en Música a lo largo de la historia de nuestro país, intérpretes, cantautores, folkloristas y otros grandes de la música.' %}\n\n{% trans 'FONDOS DOCUMENTALES INSTITUCIONALES' %}\n\n{% trans 'Otros fondos tienen su origen en  archivos musicales históricos de instituciones cuya labor está o estuvo vinculada con la historia de la música chilena. Entre éstas: El Consejo Chileno de la Música, fundado en 1984; el Festival Internacional Guitarras de América; la Asociación Nacional de Compositores de Chile (ANC), fundada en 1936; y el Movimiento de Música Contemporánea ANACRUSA fundado en 1980. Y por el área de la producción fonográfica cuenta con los archivos históricos del estudio de grabación StudioMaster; el Sello fonográfico Alerce Ediciones, la otra música; y el Sello fonográfico Raíces.' %}\n\n{% trans 'COLECCIONES DEL ARCHIVO DE MÚSICA' %}\n\n{% trans 'Colecciones sonoras de música' %}\n\n{% trans 'Discos metálicos de 24 cm de diámetro y su correspondiente caja de Música Kalliope, fabricada hacia 1895 por Kalliope Musikwerkw, en Leipzig, Alemania. Dispone de un peine de 48 dientes, la cuerda se acciona a través de una manivela. El repertorio consiste en adaptaciones de trozos breves de arias de ópera, ballets y conciertos.' %} {% trans 'Rollos de pianola junto a su instrumento, que perteneció a una familia de Talca y fue conservado con su maquinaria completa. Los rollos de papel están en excelente estado de conservación y contienen adaptaciones de música tradicional latinoamericana, de música clásica y también de música popular, como baladas, foxtrots y otros géneros del Valparaíso de 1900.' %} {% trans 'Discos de victrola editados en Chile en su mayoría, en buenas condiciones de conservación. Comprende música popular, conjuntos folklóricos de la década de 1940 y 1950, e intérpretes chilenos como Claudio Arrau, Ramón Vinay y Ester Soré.' %} {% trans 'Vinilos, casetes, CDs y DVDs correspondientes a la vasta producción discográfica chilena hasta la actualidad.' %} {% trans 'Colección bibliográfica musical chilena del s.XIX a la actualidad y de recortes de prensa nacional' %} {% trans 'Compuesta por libros; publicaciones musicales antiguas como Ecos Melódicos y Álbum Patriótico de Ruperto Santa Cruz; además de artículos y entrevistas de periódicos como La Nación, El Diario Ilustrado, El Mercurio y El Siglo; y revistas como Ercilla, Zig-Zag, El Musiquero, Revista Musical Chilena y Ecran.' %} {% trans 'Colección de partituras editadas en Chile entre 1851 y 1960' %} {% trans 'Esta colección está formada por partituras editadas desde la segunda mitad del s. XIX por Eustaquio Guzmán (1851), Eduardo Niemeyer (1851), Carlos Brandt, Carlos Kirsinger, Grimm & Kern, J.A. Yantorno y R. Weinreich; hasta ediciones de la primera mitad del s. XX, entre éstas Kirsinger (1900) —sucesor de Carlos Kirsinger—, Mattensohn & Grimm (1910) —sucesora de Carlos Brandt—, la casa Grimm & Kern (1911) y la Casa Amarilla (1911) . Las partituras de esta colección documentan diversos períodos de nuestra historia, como los fines de la Colonia (1780–1810), los albores de la República (1810–1840), la Guerra Contra la Confederación Perú-Boliviana (1836-1839), la Guerra del Pacífico (1879) y la celebración del Centenario de la República (1910). Entre los compositores se cuentan Delfina Pérez; el músico español Antonio Alba, quien desplegó en Chile una numerosa obra de difusión musical; el compositor E. Billet, afamado violonchelista francés avecindado en Copiapó (1862-1864); Federico Guzmán, Ruperto Santa Cruz, Luigi Stefano Giarda y Osmán Pérez Freire, entre otros.' %}\n\n{% trans 'Colección de álbumes de partituras' %}\n\n{% trans 'Más de 200 álbumes de partituras que obedecen a compendios de repertorio empastados principalmente por mujeres, donde sobresalen anotaciones, dedicatorias y marcas de uso. Algunos de los dueños de álbumes son Isidora Zegers; las hermanas Carmela y Clarisa Vega Castro (datados en Copiapó entre 1889 y 1934), que desarrollaron una importante labor de difusión e interpretación de obras, así como de creación musical. Este fue un hito importante, ya que la visibilidad de mujeres compositoras en Chile era prácticamente nula, poniendo a esta región en un lugar puntero en cuanto a actividad musical se refiere. Destaca el Libro Sesto de María Antonia Palacios, manuscrito datado en 1790 aprox. y de gran importancia por no haber pertenecido a ningún bibliófilo y tener las únicas partituras conocidas del músico español Juan Capistrano Coley y Embid.' %}"
+                info: "{% trans 'El Archivo de Música de Chile preserva y difunde colecciones y fondos documentales que reflejan la historia musical del país. Su acervo incluye partituras, registros sonoros, fotografías, correspondencia y documentos administrativos de músicos destacados, instituciones como la Asociación Nacional de Compositores, y sellos fonográficos como Alerce y Raíces.' %} {% trans 'Destacan colecciones de discos, rollos de pianola, libros, revistas, y partituras editadas desde el siglo XIX, que documentan hitos históricos como la Guerra del Pacífico y el Centenario de la República. También alberga álbumes de partituras, muchos compilados por mujeres, que resaltan su rol en la música chilena.' %}"
             },
             "Archivo del Escritor": {
                 title: "{% trans 'Archivo del Escritor' %}",
@@ -208,9 +252,116 @@
                 info: "{% trans 'El Depósito Legal es la normativa que establece la obligatoriedad, para todas las imprentas, productoras de cine y video, sellos musicales, publicaciones electrónicas y canales de televisión, de enviar a la Biblioteca Nacional un determinado número de ejemplares al momento de su publicación.' %} {% trans 'En el caso de los impresos deben enviarse 5 ejemplares; en cuanto a las grabaciones sonoras, producciones audiovisuales o electrónicas, 2 ejemplares de cada una. En el caso de las publicaciones periódicas pueden suscribirse convenios para establecer modalidades de depósito legal mixto, sustituyendo algunos ejemplares por microfilmes y/o soportes electrónicos. De los impresos en regiones, 3 ejemplares deben enviarse a la Biblioteca Nacional y 2 ejemplares se depositan en la Biblioteca Regional de la respectiva región. En caso de no existir, deberán enviarse los 5 ejemplares a la Biblioteca Nacional.' %} {% trans 'La Ley de Depósito Legal fue dictada en octubre de 1925 y, actualmente, esta normativa se enmarca dentro de la Ley 19.733 sobre libertades de opinión e información y ejercicio del periodismo, publicada en el Diario Oficial con fecha 6 de junio del año 2001. Inciso modificado Ley 20.709 Art. Único N°1 i D.O. 23/12/2013, Artículo 14 (inciso final).' %} {% trans '“Los organismos del Estado no podrán adquirir obras impresas, grabaciones sonoras o producciones electrónicas o audiovisuales, fílmicas o cinematográficas, de los editores, productores o realizadores que no den cumplimiento a la obligación establecida en este artículo (Depósito Legal), ni otorgar financiamiento a éstos a través de fondos o subvenciones. Para estos efectos, la Biblioteca Nacional deberá certificar que no ha efectuado denuncias relativas a esta infracción.”' %}"
             }
         };
+        const translationstexto = {
+          "Hemeroteca":{
+            nombrecasilla: "{% trans 'Hemeroteca' %}"
+          },
+          "Periódicos y Microformatos":{
+            nombrecasilla:"{% trans 'Periódicos y Microformatos' %}"
+          },
+          " Sala José Toribio Medina":{
+            nombrecasilla: "{% trans ' Sala José Toribio Medina' %}" 
+          },
+          "Archivo de Música":{
+            nombrecasilla: "{% trans 'Archivo de Música' %}",
+          },
+          "Archivo del Escritor":{
+            nombrecasilla: "{% trans 'Archivo del Escritor' %}",
+          },
+          "Fondo General":{
+            nombrecasilla: "{% trans 'Fondo General' %}"
+          },
+          "Referencias y Bibliografía":{
+            nombrecasilla: "{% trans 'Referencias y Bibliografía' %}",
+          },
+          "Salón de investigadores":{
+            nombrecasilla: "{% trans 'Salón de investigadores' %}"
+          },
+          "Sección Chilena":{
+            nombrecasilla: "{% trans 'Sección Chilena' %}"
+          },
+          "Departamento de Conservación":{
+            nombrecasilla: "{% trans 'Departamento de Conservación' %}",
+          },
+          "Extensión Cultural":{
+            nombrecasilla: "{% trans 'Extensión Cultural' %}"
+          },
+          "Departamento de Procesos Técnicos":{
+            nombrecasilla: "{% trans 'Departamento de Procesos Técnicos' %}"
+          },
+          "Depósito Legal":{
+            nombrecasilla: "{% trans 'Depósito Legal' %}", 
+          },
+          "Seguridad":{
+            nombrecasilla: "{% trans 'seguridad' %}"
+          },
+          "Departamento de Sistemas de Información Bibliográficas":{
+            nombrecasilla: "{% trans 'Departamento de Sistemas de Información Bibliográficas' %}"
+          },
+          "Oficina de Gestión y Desarrollo":{
+            nombrecasilla: "{% trans 'Oficina de Gestión y Desarrollo' %}"
+          },
+          "Baños":{
+            nombrecasilla: "{% trans 'Baños' %}"
+          },
+          "Unidad Ediciones Biblioteca Nacional":{
+            nombrecasilla: "{% trans 'Unidad Ediciones Biblioteca Nacional' %}"
+          },
+          "Archivo de Láminas y Estampas":{
+            nombrecasilla: "{% trans 'Archivo de Láminas y Estampas' %}"
+          },
+          "Préstamos a Domicilio":{
+            nombrecasilla: "{% trans 'Préstamos a Domicilio' %}"
+          },
+          "Oficina de Partes":{
+            nombrecasilla: "{% trans 'Oficina de Partes' %}"
+          },
+          "Departamento de Atención de Usuarios":{
+            nombrecasilla: "{% trans 'Departamento de Atención de Usuarios' %}"
+          },
+          "Archivo de Referencias Críticas":{
+            nombrecasilla: "{% trans 'Archivo de Referencias Críticas' %}"
+          },
+          "Sección Mapoteca":{
+            nombrecasilla: "{% trans 'Sección Mapoteca' %}"
+          },
+          "Galería de Cristal":{
+            nombrecasilla: "{% trans 'Galería de Cristal' %}"
+          },
+          "Salón Marta Cruz-Coke":{
+            nombrecasilla: "{% trans 'Salón Marta Cruz-Coke' %}"
+          },
+          "Acceso Catálogo en Línea":{
+            nombrecasilla: "{% trans 'Acceso Catálogo en Línea' %}"
+          },
+          "Librería Biblioteca Nacional":{
+            nombrecasilla: "{% trans 'Librería Biblioteca Nacional' %}"
+          },
+          "Sala América":{
+            nombrecasilla: "{% trans 'Sala América' %}"
+          },
+          "Dirección Biblioteca Nacional":{
+            nombrecasilla: "{% trans 'Dirección Biblioteca Nacional' %}"
+          },
+          "Sala Ercilla":{
+            nombrecasilla: "{% trans 'Sala Ercilla' %}"
+          },
+          "Centro de Investigaciones Barros Arana":{
+            nombrecasilla: "{% trans 'Centro de Investigaciones Barros Arana' %}"
+          },
+          "Salón Gabriela Mistral":{
+            nombrecasilla: "{% trans 'Salón Gabriela Mistral' %}"
+          },
+        };
+        const translationstexto_rotado = {          
+          "Archivo de Música":{
+            nombrecasilla: "{% trans 'Archivo de Música' %}",
+
+          },
+        };
     </script>
     <div id="calendar"></div>
-    <button id="event-button" onclick="window.location.href='{% url 'view_calendar' %}'">{% trans 'Ver Eventos' %}</button>
+    
     <script>
         $(document).ready(function() {
             $('#calendar').fullCalendar({
@@ -224,12 +375,14 @@
         });
     </script>
     {% if user.is_authenticated %}
-        <p>Hola, {{ user.username }} <a href="{% url 'signout' %}">Cerrar sesion</a></p>
+        <p>Hola {{ user.username }} <a class="buttones" href="{% url 'signout' %}">Cerrar sesión</a></p>
          <a href="{% url 'ver_sugerencias' %}">
-            <button type="button">Ver Sugerencias</button>
+            <button type="button" class="buttones">Ver Sugerencias</button>
         </a>
     {% else %}
-        <p><a id="inicio-sesion" href="{% url 'signin' %}">Iniciar sesion</a></p>
+        <a href="{% url 'signin' %}">
+          <button type="button" class="buttones">Iniciar Sesión</button>
+        </a>
     {% endif %}
 </body>
 </html>
